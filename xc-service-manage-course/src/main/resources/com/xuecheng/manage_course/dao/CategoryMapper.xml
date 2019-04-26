@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xuecheng.manage_course.dao.CategoryMapper">
+    <resultMap id="CategoryList" type="CategoryNode">
+        <id  property="id" column="one_id"></id>
+        <result property="name" column="one_name"></result>
+        <collection property="children" ofType="CategoryNode">
+            <id  property="id" column="two_id"></id>
+            <result property="name" column="two_name"></result>
+            <collection property="children" ofType="CategoryNode">
+                <id  property="id" column="third_id"></id>
+                <result property="name" column="third_name"></result>
+            </collection>
+        </collection>
+    </resultMap>
+    <select id="selectList" parameterType="java.lang.String"
+            resultMap="CategoryList">
+        select
+          a.id one_id,
+          a.name one_name,
+          b.id two_id,
+          b.name two_name,
+          c.id third_id,
+          c.name third_name
+          from xc_course.category a left join xc_course.category b on a.id=b.parentid
+            left join xc_course.category c on b.id=c.parentid
+          <where>
+              <if test="parentid != null and parentid != ''">
+                  a.parentid=#{parentid}
+              </if>
+          </where>
+    </select>
+</mapper>

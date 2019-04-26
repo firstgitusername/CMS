@@ -1,0 +1,29 @@
+server:
+  port: ${PORT:50101}
+spring:
+  application:
+    name: xc-govern-center
+  security:
+    user:
+      name: cys101
+      password: 123456
+eureka:
+
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    prefer-same-zone-eureka: true
+    #地区
+    region: ${EUREKA_REGION:shanghai}
+    availability-zones:
+      shanghai: ${EUREKA_ZONE:zone-1}
+    service-url:
+      zone-1: ${EUREKA_SERVER1:http://cys101:123456@eureka02:50102/eureka/}
+      zone-2: ${EUREKA_SERVER2:http://cys101:123456@eureka02:50102/eureka/}
+  server:
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 60000
+  instance:
+    hostname: ${EUREKA_DOMAIN:eureka01}
+    status-page-url: /actuator/info
+    health-check-url-path: /actuator/health

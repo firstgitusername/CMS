@@ -1,0 +1,39 @@
+server:
+  port: ${PORT:31001}
+spring:
+  application:
+    name: xc-service-manage-cms
+  data:
+    mongodb:
+      uri:  mongodb://root:123@localhost:27017
+      database: xc_cms
+  freemarker:
+    cache: false
+    settings:
+      template_update_delay: 0
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtualHost: /
+eureka:
+  client:
+    registerWithEureka: true #服务注册开关
+    fetchRegistry: true #服务发现开关
+    prefer-same-zone-eureka: true
+     #地区
+    region: ${EUREKA_REGION:shanghai}
+    availability-zones:
+      shanghai: ${EUREKA_ZONE:zone-1}
+    service-url:
+      zone-1: ${EUREKA_SERVER1:http://cys101:123456@eureka02:50102/eureka/}
+      zone-2: ${EUREKA_SERVER2:http://cys101:123456@eureka02:50102/eureka/}
+  instance:
+    prefer-ip-address: true #将自己的ip地址注册到Eureka服务中
+    ip-address: ${IP_ADDRESS:127.0.0.1}
+    instance-id: ${spring.application.name}:${server.port}:@project.version@ #指定实例id
+    status-page-url: /actuator/info
+    health-check-url-path: /actuator/health
+    metadata-map:
+      zone: ${EUREKA_ZONE_MY:zone-1}
